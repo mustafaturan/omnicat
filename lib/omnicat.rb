@@ -1,0 +1,7 @@
+require File.dirname(__FILE__) + '/omnicat/version'
+require File.dirname(__FILE__) + '/omnicat/string'
+require File.dirname(__FILE__) + '/omnicat/array'
+require File.dirname(__FILE__) + '/omnicat/hash'
+require File.dirname(__FILE__) + '/omnicat/base'
+require File.dirname(__FILE__) + '/omnicat/result'
+require File.dirname(__FILE__) + '/omnicat/bayes'
