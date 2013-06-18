@@ -2,8 +2,12 @@ module OmniCat
   module Classifiers
     class Bayes < ::OmniCat::Classifiers::Base
 
-      attr_accessor :categories, :category_count, :doc_count, :token_count, :uniq_token_count
-      attr_accessor :k_value # helper val for skipping some Bayes theorem errors
+      attr_accessor :categories # ::OmniCat::Hash - Hash of categories
+      attr_accessor :category_count # Integer - Total category count
+      attr_accessor :doc_count # Integer - Total token count
+      attr_accessor :token_count # Integer - Total token count
+      attr_accessor :uniq_token_count # Integer - Total uniq token count
+      attr_accessor :k_value # Integer - Helper value for skipping some Bayes algorithm errors
 
       def initialize(bayes_hash = {})
         self.categories = ::OmniCat::Hash.new
@@ -56,20 +60,11 @@ module OmniCat
       #   bayes.train("neutral", "how is the management gui")
       def train(category_name, doc)
         if category_exists?(category_name)
-          self.doc_count += 1
-          categories[category_name].doc_count += 1
+          increment_doc_counts(category_name)
+          update_priors
           doc.tokenize_with_counts.each do |token, count|
-            uniq_token_addition = 0
-            categories.each do |name, category|
-               if category.tokens.has_key?(token)
-                 uniq_token_addition = 1
-                 break
-               end 
-            end
-            self.uniq_token_count += 1 if uniq_token_addition == 0
-            self.token_count += count
+            increment_token_counts(category_name, token, count)
             self.categories[category_name].tokens[token] = self.categories[category_name].tokens[token].to_i + count
-            self.categories[category_name].token_count += count
           end
         else
           raise StandardError,
@@ -99,27 +94,13 @@ module OmniCat
         end
         score = -1000000
         result = ::OmniCat::Result.new
-        categories.each do |name, category|
-          prior = category.doc_count / doc_count.to_f
-          result.scores[name] = k_value
-          doc.tokenize_with_counts.each do |token, count|
-            if category.tokens[token].to_i == 0
-              result.scores[name] *= k_value / token_count
-            else
-              result.scores[name] *= (
-                count * (
-                  (category.tokens[token].to_i + k_value) /
-                  (category.token_count + uniq_token_count)
-                )
-              )
-            end
+        self.categories.each do |category_name, category|
+          result.scores[category_name] = doc_probability(category, doc)
+          if result.scores[category_name] > score
+            result.category[:name] = category_name
+            score = result.scores[category_name]
           end
-          result.scores[name] = prior * result.scores[name]
-          if result.scores[name] > score
-            result.category[:name] = name;
-            score = result.scores[name];
-          end
-          result.total_score += result.scores[name]
+          result.total_score += result.scores[category_name]
         end
         result.total_score = 1 if result.total_score == 0
         result.category[:percentage] = (
@@ -133,6 +114,59 @@ module OmniCat
         # nodoc
         def category_exists?(category_name)
           categories.has_key?(category_name)
+        end
+
+        # nodoc
+        def increment_doc_counts(category_name)
+          self.doc_count += 1
+          self.categories[category_name].doc_count += 1
+        end
+
+        # nodoc
+        def update_priors
+          self.categories.each do |_, category|
+            category.prior = category.doc_count / doc_count.to_f
+          end
+        end
+
+        # nodoc
+        def increment_token_counts(category_name, token, count)
+          increment_uniq_token_count(token)
+          self.token_count += count
+          self.categories[category_name].token_count += count
+        end
+
+        # nodoc
+        def increment_uniq_token_count(token)
+          uniq_token_addition = 0
+          categories.each do |_, category|
+             if category.tokens.has_key?(token)
+               uniq_token_addition = 1
+               break
+             end
+          end
+          self.uniq_token_count += 1 if uniq_token_addition == 0
+        end
+
+        # nodoc
+        def doc_probability(category, doc)
+          score = k_value
+          doc.tokenize_with_counts.each do |token, count|
+            score *= token_probability(category, token, count)
+          end
+          category.prior * score
+        end
+
+        # nodoc
+        def token_probability(category, token, count)
+          if category.tokens[token].to_i == 0
+            k_value / token_count
+          else
+            count * (
+              (category.tokens[token].to_i + k_value) /
+              (category.token_count + uniq_token_count)
+            )
+          end
         end
 
     end
