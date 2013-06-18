@@ -1,6 +1,6 @@
 # OmniCat
 
-[![Build Status](https://travis-ci.org/mustafaturan/omnicat.png)](https://travis-ci.org/mustafaturan/omnicat)
+[![Build Status](https://travis-ci.org/mustafaturan/omnicat.png)](https://travis-ci.org/mustafaturan/omnicat) [![Code Climate](https://codeclimate.com/github/mustafaturan/omnicat.png)](https://codeclimate.com/github/mustafaturan/omnicat)
 
 A generalized framework for text classifications. For now, it only supports Naive Bayes algorithm for text classification.
 
