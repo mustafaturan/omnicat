@@ -56,10 +56,10 @@ Train category with multiple documents.
 ### Classify
 Classify a document.
 
-    result = bayes.classify('I feel so good happy')
-    => #<OmniCat::Result:0x007fac25047af8 @category={:name=>"positive", :percentage=>100}, @scores={"positive"=>7.962089836259623e-06, "negative"=>0}, @total_score=7.962089836259623e-06>
+    result = bayes.classify('I feel so good and happy')
+    => #<OmniCat::Result:0x007fd20296aad8 @category={:name=>"positive", :percentage=>73}, @scores={"positive"=>5.4253472222222225e-09, "negative"=>1.9600796074572086e-09}, @total_score=7.385426829679431e-09>
     result.to_hash
-    => {:category=>{:name=>"positive", :percentage=>100}, :scores=>{"positive"=>7.962089836259623e-06, "negative"=>0}, :total_score=>7.962089836259623e-06}
+    => {:category=>{:name=>"positive", :percentage=>73}, :scores=>{"positive"=>5.4253472222222225e-09, "negative"=>1.9600796074572086e-09}, :total_score=>7.385426829679431e-09}
 
 ### Classify batch
 Classify multiple documents at a time.
@@ -70,19 +70,22 @@ Classify multiple documents at a time.
         'a good piece of work'
       ]
     )
-    => [#<OmniCat::Result:0x007fe59b949d90 @category={:name=>"negative", :percentage=>75}, @scores={"positive"=>7.962089836259623e-06, "negative"=>2.5145916163515512e-05}, @total_score=3.3108005999775135e-05>, #<OmniCat::Result:0x007fe59c9d7d10 @category={:name=>"positive", :percentage=>100}, @scores={"positive"=>0.0005434126313247192, "negative"=>0}, @total_score=0.0005434126313247192>]
+    => [#<OmniCat::Result:0x007fd2029341b8 @category={:name=>"negative", :percentage=>78}, @scores={"positive"=>2.5521869888765736e-14, "negative"=>9.074442627116706e-14}, @total_score=1.162662961599328e-13>, #<OmniCat::Result:0x007fd20292e7e0 @category={:name=>"positive", :percentage=>80}, @scores={"positive"=>2.411265432098765e-07, "negative"=>5.880238822371627e-08}, @total_score=2.999289314335928e-07>]
 
 ### Convert to hash
 Convert full Bayes object to hash.
 
     # For storing, restoring modal data
     bayes_hash = bayes.to_hash
+    => {:categories=>{"positive"=>{:doc_count=>4, :tokens=>{"great"=>1, "if"=>1, "you"=>2, "are"=>2, "in"=>2, "slap"=>1, "happy"=>1, "mood"=>1, "feel-good"=>2, "picture"=>1, "the"=>2, "best"=>1, "sense"=>1, "of"=>2, "term"=>1, "it"=>1, "is"=>1, "movie"=>1, "about"=>1, "which"=>1, "can"=>1, "actually"=>1, "feel"=>1, "good"=>2, "love"=>1, "and"=>1, "money"=>1, "both"=>1, "them"=>1, "choises"=>1}, :token_count=>37}, "negative"=>{:doc_count=>4, :tokens=>{"bad"=>1, "tracking"=>1, "issue"=>1, "simplistic"=>1, "silly"=>1, "and"=>1, "tedious"=>1, "interesting"=>1, "but"=>2, "not"=>2, "compelling"=>2, "seems"=>1, "clever"=>1, "especially"=>1}, :token_count=>17}}, :category_count=>2, :doc_count=>8, :k_value=>1.0, :token_count=>54, :uniq_token_count=>43}
 
 ### Load from hash
 Load full Bayes object from hash.
 
     another_bayes_obj = OmniCat::Classifiers::Bayes.new(bayes_hash)
+    => #<OmniCat::Classifiers::Bayes:0x007fd20308cff0 @categories={"positive"=>#<OmniCat::Classifiers::BayesInternals::Category:0x007fd20308cf78 @doc_count=4, @tokens={"great"=>1, "if"=>1, "you"=>2, "are"=>2, "in"=>2, "slap"=>1, "happy"=>1, "mood"=>1, "feel-good"=>2, "picture"=>1, "the"=>2, "best"=>1, "sense"=>1, "of"=>2, "term"=>1, "it"=>1, "is"=>1, "movie"=>1, "about"=>1, "which"=>1, "can"=>1, "actually"=>1, "feel"=>1, "good"=>2, "love"=>1, "and"=>1, "money"=>1, "both"=>1, "them"=>1, "choises"=>1}, @token_count=37>, "negative"=>#<OmniCat::Classifiers::BayesInternals::Category:0x007fd20308cf00 @doc_count=4, @tokens={"bad"=>1, "tracking"=>1, "issue"=>1, "simplistic"=>1, "silly"=>1, "and"=>1, "tedious"=>1, "interesting"=>1, "but"=>2, "not"=>2, "compelling"=>2, "seems"=>1, "clever"=>1, "especially"=>1}, @token_count=17>}, @category_count=2, @doc_count=8, @k_value=1.0, @token_count=54, @uniq_token_count=43>
     another_bayes_obj.classify('best senses')
+    => #<OmniCat::Result:0x007fd203075008 @category={:name=>"positive", :percentage=>57}, @scores={"positive"=>0.0002314814814814815, "negative"=>0.00017146776406035664}, @total_score=0.00040294924554183816>
 
 ## Todo
 * Add more text classification modules such as Support Vector Machine (SVM).
