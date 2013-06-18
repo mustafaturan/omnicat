@@ -56,10 +56,10 @@ Train category with multiple documents.
 ### Classify
 Classify a document.
 
-    result = bayes.classify('I feel so good and happy')
-    => #<OmniCat::Result:0x007fe59b97b548 @category={:name=>"negative", :percentage=>99}, @scores={"positive"=>1.749909854122994e-07, "negative"=>0.014084507042253521}, @total_score=0.014084682033238934>
+    result = bayes.classify('I feel so good happy')
+    => #<OmniCat::Result:0x007fac25047af8 @category={:name=>"positive", :percentage=>100}, @scores={"positive"=>7.962089836259623e-06, "negative"=>0}, @total_score=7.962089836259623e-06>
     result.to_hash
-    => {:category=>{:name=>"negative", :percentage=>99}, :scores=>{"positive"=>1.749909854122994e-07, "negative"=>0.014084507042253521}, :total_score=>0.014084682033238934}
+    => {:category=>{:name=>"positive", :percentage=>100}, :scores=>{"positive"=>7.962089836259623e-06, "negative"=>0}, :total_score=>7.962089836259623e-06}
 
 ### Classify batch
 Classify multiple documents at a time.
