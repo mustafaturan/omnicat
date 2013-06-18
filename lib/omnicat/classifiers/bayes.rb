@@ -2,7 +2,7 @@ module OmniCat
   module Classifiers
     class Bayes < ::OmniCat::Classifiers::Base
 
-      attr_accessor :categories, :category_count, :doc_count, :token_count
+      attr_accessor :categories, :category_count, :doc_count, :token_count, :uniq_token_count
       attr_accessor :k_value # helper val for skipping some Bayes theorem errors
 
       def initialize(bayes_hash = {})
@@ -16,6 +16,7 @@ module OmniCat
         self.doc_count = bayes_hash[:doc_count].to_i
         self.k_value = bayes_hash[:k_value] || 1.0
         self.token_count = bayes_hash[:token_count].to_i
+        self.uniq_token_count = bayes_hash[:uniq_token_count].to_i
       end
 
       # Allows adding new classification category
@@ -53,18 +54,26 @@ module OmniCat
       #   bayes.train("positive", "good, very well")
       #   bayes.train("negative", "bad dog")
       #   bayes.train("neutral", "how is the management gui")
-      def train(category, doc)
-        if category_exists?(category)
+      def train(category_name, doc)
+        if category_exists?(category_name)
           self.doc_count += 1
-          categories[category].doc_count += 1
+          categories[category_name].doc_count += 1
           doc.tokenize_with_counts.each do |token, count|
+            uniq_token_addition = 0
+            categories.each do |name, category|
+               if category.tokens.has_key?(token)
+                 uniq_token_addition = 1
+                 break
+               end 
+            end
+            self.uniq_token_count += 1 if uniq_token_addition == 0
             self.token_count += count
-            self.categories[category].tokens[token] = self.categories[category].tokens[token].to_i + count
-            self.categories[category].token_count += count
+            self.categories[category_name].tokens[token] = self.categories[category_name].tokens[token].to_i + count
+            self.categories[category_name].token_count += count
           end
         else
           raise StandardError,
-                "Category with name '#{category}' does not exist!"
+                "Category with name '#{category_name}' does not exist!"
         end
       end
 
@@ -94,14 +103,18 @@ module OmniCat
           prior = category.doc_count / doc_count.to_f
           result.scores[name] = k_value
           doc.tokenize_with_counts.each do |token, count|
-            result.scores[name] *= (
-              (category.tokens[token].to_i + k_value) /
-              (category.token_count + token_count)
-            ) if category.tokens.has_key?(token)
+            if category.tokens[token].to_i == 0
+              result.scores[name] *= k_value / token_count
+            else
+              result.scores[name] *= (
+                count * (
+                  (category.tokens[token].to_i + k_value) /
+                  (category.token_count + uniq_token_count)
+                )
+              )
+            end
           end
-          result.scores[name] = (
-            result.scores[name].to_f == 1.0 ? 0 : (prior * result.scores[name])
-          )
+          result.scores[name] = prior * result.scores[name]
           if result.scores[name] > score
             result.category[:name] = name;
             score = result.scores[name];
