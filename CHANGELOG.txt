@@ -1,3 +1,6 @@
+0.1.2
+# fix the bayes algorithm (so important changes!)
+
 0.1.1
 # fix Regexp error for ruby version < 2.0.0
 
