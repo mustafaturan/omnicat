@@ -52,6 +52,14 @@ class TestBayes < Test::Unit::TestCase
     assert_raise(StandardError) { @bayes.train "neutral", "how are you?" }
   end
 
+  def test_classifiability_error
+    @bayes.add_category "positive"
+    @bayes.add_category "negative"
+    assert_raise(StandardError) { @bayes.classify "good job" }
+    @bayes.train("positive", "good job")
+    assert_raise(StandardError) { @bayes.classify "good job" }
+  end
+
   def test_classify
     @bayes.add_category "positive"
     @bayes.add_category "negative"

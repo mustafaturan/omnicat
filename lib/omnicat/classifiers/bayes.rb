@@ -4,6 +4,7 @@ module OmniCat
 
       attr_accessor :categories # ::OmniCat::Hash - Hash of categories
       attr_accessor :category_count # Integer - Total category count
+      attr_accessor :classifiability
       attr_accessor :doc_count # Integer - Total token count
       attr_accessor :token_count # Integer - Total token count
       attr_accessor :uniq_token_count # Integer - Total uniq token count
@@ -88,10 +89,7 @@ module OmniCat
       #   bayes.classify("good documentation")
       #   =>
       def classify(doc)
-        if category_count < 2
-          return raise StandardError,
-                       "At least 2 categories needed for classification process!"
-        end
+        return unless classifiable?
         score = -1000000
         result = ::OmniCat::Result.new
         self.categories.each do |category_name, category|
@@ -167,6 +165,29 @@ module OmniCat
               (category.token_count + uniq_token_count)
             )
           end
+        end
+
+        # nodoc
+        def classifiable?
+          if category_count < 2
+            raise StandardError,
+                  "At least 2 categories needed for classification process!"
+            false
+          elsif doc_avability? == false
+            raise StandardError,
+                  "Each category must trained with at least one document!"
+            false
+          else
+            true
+          end
+        end
+
+        # nodoc
+        def doc_avability?
+          self.categories.each do |_, category|
+            return false if category.doc_count == 0
+          end
+          true
         end
 
     end
