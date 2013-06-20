@@ -33,17 +33,17 @@ class TestBayes < Test::Unit::TestCase
 
   def test_train_valid_category
     @bayes.add_category "neutral"
-    @bayes.train "neutral", "how are you?"
+    @bayes.train "neutral", "how are you?? : :| :) ;-) :("
     assert_equal(
       1,
       @bayes.categories["neutral"].doc_count
     )
     assert_equal(
-      {"how" => 1, "are" => 1, "you" => 1},
+      {"how" => 1, "are" => 1, "you" => 1, "?" => 2, ":|" => 1, ":)" => 1, ";-)" => 1, ":(" => 1},
       @bayes.categories["neutral"].tokens
     )
     assert_equal(
-      3,
+      9,
       @bayes.categories["neutral"].token_count
     )
   end
