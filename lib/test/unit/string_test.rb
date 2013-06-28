@@ -4,7 +4,7 @@ class TestString < Test::Unit::TestCase
   def test_omnicat_tokenize
     assert_equal(
       ["mustafa", "turan", "omni-cat-v0", "1986"],
-      "mustafa turan omni-cat-v0 1986 1 a s d".omnicat_tokenize
+      "mustafa turan omni-cat-v0 1986 1 a s d @omnicat @ruby5".omnicat_tokenize
     )
   end
 
