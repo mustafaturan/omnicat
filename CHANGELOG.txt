@@ -1,4 +1,5 @@
 Master Branch
+# string tokenize method : scanner pattern update for remove mention-tokens which start with '@' char
 # string tokenize method : scanner pattern update for emotion symbols
 
 0.1.3
