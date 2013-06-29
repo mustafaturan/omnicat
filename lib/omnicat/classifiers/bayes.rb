@@ -4,7 +4,6 @@ module OmniCat
 
       attr_accessor :categories # ::OmniCat::Hash - Hash of categories
       attr_accessor :category_count # Integer - Total category count
-      attr_accessor :classifiability
       attr_accessor :doc_count # Integer - Total token count
       attr_accessor :token_count # Integer - Total token count
       attr_accessor :uniq_token_count # Integer - Total uniq token count
