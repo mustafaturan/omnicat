@@ -2,48 +2,45 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper'))
 
 class TestBase < Test::Unit::TestCase
   def setup
-    @bayes = OmniCat::Classifiers::Bayes.new
+    @base = OmniCat::Classifiers::Base.new
+  end
+
+  def test_add_category
+    assert_raise(NotImplementedError) { @base.add_category("positive") }
   end
 
   def test_add_categories
-    @bayes.add_categories ["neutral", "positive", "negative"]
-    assert_not_nil(@bayes.categories["neutral"])
-    assert_equal(
-      ["neutral", "positive", "negative"],
-      @bayes.categories.keys
-    )
+    assert_raise(NotImplementedError) { @base.add_categories(
+      ["neutral", "positive", "negative"]) }
+  end
+
+  def test_train
+    assert_raise(NotImplementedError) { @base.train("positive", "good") }
   end
 
   def test_train_batch
-    @bayes.add_category "positive"
-    @bayes.train_batch "positive", ["good job ever", "valid syntax",
-      "best moments of my life"]
-    assert_equal(
-      3,
-      @bayes.categories["positive"].doc_count
-    )
+    assert_raise(NotImplementedError) {
+      @base.train_batch("positive", ["good job ever", "valid syntax",
+      "best moments of my life"])
+    }
+  end
+
+  def test_untrain
+    assert_raise(NotImplementedError) { @base.untrain("positive", "good") }
+  end
+
+  def test_untrain_batch
+    assert_raise(NotImplementedError) { @base.untrain_batch(
+      "positive", ["good work", "well done"]) }
+  end
+
+  def test_classify
+    assert_raise(NotImplementedError) { @base.classify("good job") }
   end
 
   def test_classify_batch
-    @bayes.add_category "positive"
-    @bayes.add_category "negative"
-    @bayes.train_batch "positive", ["good job ever", "valid syntax",
-      "best moments of my life"]
-    @bayes.train_batch("negative", ["bad work", "awfull day", "never liked it"])
-    results = @bayes.classify_batch(
-      ["good sytanx research", "bad words"]
-    )
-
-    assert_equal(2, results.count)
-
-    assert_equal(
-      "positive",
-      results[0].category[:name]
-    )
-    assert_equal(
-      "negative",
-      results[1].category[:name]
-    )
-
+    assert_raise(NotImplementedError) {
+      @base.classify_batch(["good job", "you did well"])
+    }
   end
 end
