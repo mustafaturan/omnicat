@@ -35,7 +35,7 @@ OmniCat allows you to change strategy on runtime.
     classifier.classify('I am happy :)')
     ...
     # change strategy to Support Vector Machine (SVM) on runtime
-    classifier = OmniCat::Classifier.new(OmniCat::Classifiers::SVM.new())
+    classifier.strategy = OmniCat::Classifiers::SVM.new
     # now you do not need to re-train, add category and so on..
     # just classify with new strategy
     classifier.classify('I am happy :)')
