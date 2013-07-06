@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require 'omnicat'
+require File.dirname(__FILE__) + '/base'
 
 module OmniCat
   class Doc < ::OmniCat::Base
