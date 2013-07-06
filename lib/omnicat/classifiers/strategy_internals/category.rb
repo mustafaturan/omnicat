@@ -1,3 +1,5 @@
+require 'omnicat'
+
 module OmniCat
   module Classifiers
     module StrategyInternals
