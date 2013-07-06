@@ -1,3 +1,5 @@
+require 'omnicat'
+
 module OmniCat
   class Result < ::OmniCat::Base
     attr_accessor :category, :scores, :total_score
