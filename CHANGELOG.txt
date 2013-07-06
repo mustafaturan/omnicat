@@ -1,6 +1,10 @@
 Master Branch
-# string tokenize method : scanner pattern update for remove mention-tokens which start with '@' char
-# string tokenize method : scanner pattern update for emotion symbols
+
+0.2.0
+# bayes classifier moved to another gem which is 'omnicat-bayes'
+# applied 'Strategy Software Design Pattern' for classifiers
+# configuration added with Singleton Software Design Pattern
+# string methods moved to OmniCat::Doc class
 
 0.1.3
 # refactoring at bayes algorithm
