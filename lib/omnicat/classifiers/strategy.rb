@@ -121,6 +121,56 @@ module OmniCat
           raise NotImplementedError.new("#{self.class.name}##{method_name} method is not implemented!")
         end
 
+      protected
+        # nodoc
+        def category_exists?(category_name)
+          categories.has_key?(category_name)
+        end
+
+        # nodoc
+        def increment_category_count
+          @category_count += 1
+        end
+
+        # nodoc
+        def decrement_category_count
+          @category_count -= 1
+        end
+
+        # nodoc
+        def increment_doc_counts(category_name)
+          @doc_count += 1
+          @categories[category_name].doc_count += 1
+        end
+
+        # nodoc
+        def decrement_doc_counts(category_name)
+          @doc_count -= 1
+          @categories[category_name].doc_count -= 1
+        end
+
+        # nodoc
+        def classifiable?
+          if category_count < 2
+            raise StandardError,
+                  'At least 2 categories needed for classification process!'
+            false
+          elsif doc_avability? == false
+            raise StandardError,
+                  'Each category must trained with at least one document!'
+            false
+          else
+            true
+          end
+        end
+
+        # nodoc
+        def doc_avability?
+          @categories.each do |_, category|
+            return false if category.doc_count == 0
+          end
+          true
+        end
     end
   end
 end
