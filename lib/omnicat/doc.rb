@@ -1,4 +1,6 @@
 # encoding: UTF-8
+require 'omnicat'
+
 module OmniCat
   class Doc < ::OmniCat::Base
     attr_reader :content, :count, :tokens
