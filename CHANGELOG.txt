@@ -1,4 +1,6 @@
 Master Branch
+0.2.1
+# to_hash method delegated to 'hashable' gem
 
 0.2.0
 # bayes classifier moved to another gem which is 'omnicat-bayes'
