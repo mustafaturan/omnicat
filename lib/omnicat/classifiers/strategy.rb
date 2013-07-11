@@ -17,7 +17,7 @@ module OmniCat
       attr_accessor :uniq_token_count # Integer - Total uniq token count
 
       def initialize(strategy_hash = {})
-        @categories = ::OmniCat::Hash.new
+        @categories = {}
         @category_count = strategy_hash[:category_count].to_i
         @category_size_limit = strategy_hash[:category_size_limit].to_i
         @doc_count = strategy_hash[:doc_count].to_i
