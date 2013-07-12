@@ -9,10 +9,10 @@ module OmniCat
     #
     # The class supplies abstract methods for possible text classifiers
     class Strategy < ::OmniCat::Base
-      attr_accessor :categories # ::OmniCat::Hash - Hash of categories
+      attr_accessor :categories # Hash - Hash of categories
       attr_accessor :category_count # Integer - Total category count
-      attr_accessor :category_size_limit # Integer - Max allowed category
-      attr_accessor :doc_count # Integer - Total token count
+      attr_accessor :category_size_limit # Integer - Max allowed category size
+      attr_accessor :doc_count # Integer - Total doc count
       attr_accessor :token_count # Integer - Total token count
       attr_accessor :uniq_token_count # Integer - Total uniq token count
 
@@ -29,9 +29,9 @@ module OmniCat
       #
       # ==== Parameters
       #
-      # * +name+ - Name for category
+      # * +category_name+ - Name for category
       #
-      def add_category(name)
+      def add_category(category_name)
         not_implemented_error(__callee__)
       end
 
@@ -39,17 +39,17 @@ module OmniCat
       #
       # ==== Parameters
       #
-      # * +names+ - Array of categories
+      # * +category_names+ - Array of categories
       #
-      def add_categories(names)
-        names.each { |name| add_category(name) }
+      def add_categories(category_names)
+        category_names.each { |category_name| add_category(category_name) }
       end
 
       # Abstract method for training the desired category with a document
       #
       # ==== Parameters
       #
-      # * +category+ - Name of the category from added categories list
+      # * +category_name+ - Name of the category from added categories list
       # * +doc+ - Document text
       #
       def train(category_name, doc)
@@ -60,18 +60,18 @@ module OmniCat
       #
       # ==== Parameters
       #
-      # * +category+ - Name of the category from added categories list
+      # * +category_name+ - Name of the category from added categories list
       # * +docs+ - Array of documents
       #
-      def train_batch(category, docs)
-        docs.each { |doc| train(category, doc) }
+      def train_batch(category_name, docs)
+        docs.each { |doc| train(category_name, doc) }
       end
 
       # Abstract method for untraining the desired category with a document
       #
       # ==== Parameters
       #
-      # * +category+ - Name of the category from added categories list
+      # * +category_name+ - Name of the category from added categories list
       # * +doc+ - Document text
       #
       def untrain(category_name, doc)
@@ -82,11 +82,11 @@ module OmniCat
       #
       # ==== Parameters
       #
-      # * +category+ - Name of the category from added categories list
+      # * +category_name+ - Name of the category from added categories list
       # * +docs+ - Array of documents
       #
-      def untrain_batch(category, docs)
-        docs.each { |doc| untrain(category, doc) }
+      def untrain_batch(category_name, docs)
+        docs.each { |doc| untrain(category_name, doc) }
       end
 
       # Abstract method for classifying the given document
