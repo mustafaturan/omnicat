@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/omnicat/configuration'
 require File.dirname(__FILE__) + '/omnicat/array'
 require File.dirname(__FILE__) + '/omnicat/base'
 require File.dirname(__FILE__) + '/omnicat/doc'
+require File.dirname(__FILE__) + '/omnicat/score'
 require File.dirname(__FILE__) + '/omnicat/result'
 require File.dirname(__FILE__) + '/omnicat/classifier'
 
