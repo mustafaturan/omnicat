@@ -14,7 +14,7 @@ module OmniCat
       attr_accessor :category_size_limit # Integer - Max allowed category size
       attr_accessor :doc_count # Integer - Total doc count
       attr_accessor :token_count # Integer - Total token count
-      attr_accessor :uniq_token_count # Integer - Total uniq token count
+      attr_accessor :unique_token_count # Integer - Total uniq token count
 
       def initialize(strategy_hash = {})
         @categories = {}
@@ -22,7 +22,7 @@ module OmniCat
         @category_size_limit = strategy_hash[:category_size_limit].to_i
         @doc_count = strategy_hash[:doc_count].to_i
         @token_count = strategy_hash[:token_count].to_i
-        @uniq_token_count = strategy_hash[:uniq_token_count].to_i
+        @unique_token_count = strategy_hash[:unique_token_count].to_i
       end
 
       # Abstract method for adding new classification category
