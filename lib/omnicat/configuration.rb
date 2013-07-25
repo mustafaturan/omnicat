@@ -6,7 +6,6 @@ require 'logger'
 module OmniCat
   class Configuration
     include Singleton
-    attr_accessor :logger
     attr_accessor :auto_train, :exclude_tokens, :logger, :token_patterns
 
     def self.default_logger
