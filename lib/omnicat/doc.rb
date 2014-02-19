@@ -1,12 +1,15 @@
 # encoding: UTF-8
+require 'digest'
 require File.dirname(__FILE__) + '/base'
 
 module OmniCat
   class Doc < ::OmniCat::Base
-    attr_reader :content, :count, :tokens
+    attr_reader :content, :content_md5, :count, :tokens
 
     def initialize(doc_hash = {})
+      @auto_classified = doc_hash[:auto_classified] || false
       @content = doc_hash[:content]
+      @content_md5 = doc_hash[:content_md5] || Digest::MD5.hexdigest("#{@content}")
       @count = (doc_hash[:count] || 1).to_i
       @tokens = tokenize_with_counts unless @tokens.is_a?(Hash)
     end

@@ -50,9 +50,9 @@ module OmniCat
       # ==== Parameters
       #
       # * +category_name+ - Name of the category from added categories list
-      # * +doc+ - Document text
+      # * +doc_content+ - Document text
       #
-      def train(category_name, doc)
+      def train(category_name, doc_content)
         not_implemented_error(__callee__)
       end
 
@@ -61,10 +61,10 @@ module OmniCat
       # ==== Parameters
       #
       # * +category_name+ - Name of the category from added categories list
-      # * +docs+ - Array of documents
+      # * +doc_contents+ - Array of documents
       #
-      def train_batch(category_name, docs)
-        docs.each { |doc| train(category_name, doc) }
+      def train_batch(category_name, doc_contents)
+        doc_contents.each { |doc_content| train(category_name, doc_content) }
       end
 
       # Abstract method for untraining the desired category with a document
@@ -72,9 +72,9 @@ module OmniCat
       # ==== Parameters
       #
       # * +category_name+ - Name of the category from added categories list
-      # * +doc+ - Document text
+      # * +doc_content+ - Document text
       #
-      def untrain(category_name, doc)
+      def untrain(category_name, doc_content)
         not_implemented_error(__callee__)
       end
 
@@ -83,23 +83,23 @@ module OmniCat
       # ==== Parameters
       #
       # * +category_name+ - Name of the category from added categories list
-      # * +docs+ - Array of documents
+      # * +doc_contents+ - Array of documents
       #
-      def untrain_batch(category_name, docs)
-        docs.each { |doc| untrain(category_name, doc) }
+      def untrain_batch(category_name, doc_contents)
+        doc_contents.each { |doc_content| untrain(category_name, doc_content) }
       end
 
       # Abstract method for classifying the given document
       #
       # ==== Parameters
       #
-      # * +doc+ - The document for classification
+      # * +doc_content+ - The document for classification
       #
       # ==== Returns
       #
       # * +result+ - OmniCat::Result object
       #
-      def classify(doc)
+      def classify(doc_content)
         not_implemented_error(__callee__)
       end
 
@@ -107,14 +107,14 @@ module OmniCat
       #
       # ==== Parameters
       #
-      # * +docs+ - Array of documents
+      # * +doc_contents+ - Array of documents
       #
       # ==== Returns
       #
       # * +result_set+ - Array of OmniCat::Result objects
       #
-      def classify_batch(docs)
-        docs.collect { |doc| classify(doc) }
+      def classify_batch(doc_contents)
+        doc_contents.collect { |doc_content| classify(doc_content) }
       end
 
       private
@@ -157,7 +157,7 @@ module OmniCat
             raise StandardError,
                   'At least 2 categories needed for classification process!'
             false
-          elsif doc_avability? == false
+          elsif doc_availability? == false
             raise StandardError,
                   'Each category must trained with at least one document!'
             false
@@ -167,7 +167,7 @@ module OmniCat
         end
 
         # nodoc
-        def doc_avability?
+        def doc_availability?
           @categories.each do |_, category|
             return false if category.doc_count == 0
           end

@@ -4,7 +4,7 @@ module OmniCat
   module Classifiers
     module StrategyInternals
       class Category < ::OmniCat::Base
-        attr_accessor :name, :doc_count, :docs, :tokens, :token_count
+        attr_accessor :doc_count, :docs, :name, :token_count, :tokens
 
         def initialize(category_hash = {})
           @doc_count = category_hash[:doc_count].to_i
